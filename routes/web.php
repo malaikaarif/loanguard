@@ -20,7 +20,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('applicant.dashboard');
 
     Route::resource('applications', LoanApplicationController::class)
-        ->only(['index', 'create', 'store', 'show', 'destroy']);
+    ->only(['index', 'create', 'store', 'show', 'destroy'])
+    ->parameters(['applications' => 'loanApplication']);
+
+    Route::get('applications/{loanApplication}/pdf', [LoanApplicationController::class, 'downloadPdf'])
+        ->name('applications.pdf');
 });
 
 // Admin routes

@@ -20,7 +20,7 @@ class LoanApplicationPolicy
 
     public function view(User $user, LoanApplication $application): bool
     {
-        return $user->id === $application->user_id;
+        return $user->id == $application->user_id;
     }
 
     public function create(User $user): bool
@@ -30,7 +30,7 @@ class LoanApplicationPolicy
 
     public function delete(User $user, LoanApplication $application): bool
     {
-        return $user->id === $application->user_id
+        return $user->id == $application->user_id
             && $application->status === 'pending';
     }
 

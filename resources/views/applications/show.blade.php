@@ -6,6 +6,9 @@
     <a href="{{ route('applications.index') }}" class="text-muted text-decoration-none">
         <i class="bi bi-arrow-left me-1"></i>Back to Applications
     </a>
+     <a href="{{ route('applications.pdf', $application) }}" class="btn btn-primary">
+        <i class="bi bi-file-pdf me-2"></i>Download PDF
+    </a>
 </div>
 
 <div class="row g-4">

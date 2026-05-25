@@ -108,6 +108,21 @@ class LoanApplicationController extends Controller
         ]);
     }
 
+
+    // Download PDF
+    public function downloadPdf(LoanApplication $loanApplication)
+    {
+        $this->authorize('view', $loanApplication);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('applications.pdf', [
+            'application' => $loanApplication
+        ]);
+
+        return $pdf->download('LoanGuard-Application-#' . $loanApplication->id . '.pdf');
+    }
+
+
+
     // Internal: Flask ML call with fallback
     private function getRiskScore(array $data): array
     {
