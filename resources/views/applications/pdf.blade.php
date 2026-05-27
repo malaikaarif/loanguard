@@ -4,53 +4,53 @@
     <meta charset="UTF-8">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: DejaVu Sans, sans-serif; color: #1a1a2e; font-size: 13px; }
+       body { font-family: DejaVu Sans, sans-serif; color: #1a1a2e; font-size: 11px; }
 
         .header {
-            background: #1a1a2e;
-            color: white;
-            padding: 28px 36px;
-            margin-bottom: 0;
-        }
-        .header-brand { font-size: 22px; font-weight: bold; }
+    background: #1a1a2e;
+    color: white;
+    padding: 16px 28px;
+    margin-bottom: 0;
+}
+       .header-brand { font-size: 18px; font-weight: bold; }
         .header-brand span { color: #e94560; }
-        .header-sub { color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 4px; }
-
+        .header-sub { color: rgba(255,255,255,0.6); font-size: 10px; margin-top: 2px; }
         .status-bar {
-            padding: 14px 36px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    padding: 8px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
         .status-approved { background: #e8f5e9; border-left: 4px solid #00b894; }
         .status-rejected { background: #ffebee; border-left: 4px solid #d63031; }
         .status-pending  { background: #fffde7; border-left: 4px solid #fdcb6e; }
 
-        .body { padding: 28px 36px; }
+     .body { padding: 14px 28px; }
 
         .section-title {
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #6c757d;
-            margin-bottom: 14px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid #f0f2f5;
-        }
+    font-size: 9px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6c757d;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #f0f2f5;
+}
+        .grid { width: 100%; margin-bottom: 10px; }
+        .grid td { padding: 4px 8px; width: 50%; vertical-align: top; }
+.grid .label { color: #6c757d; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; }
+.grid .value { font-weight: bold; font-size: 12px; margin-top: 2px; }
 
-        .grid { width: 100%; margin-bottom: 24px; }
-        .grid td { padding: 8px 12px; width: 50%; vertical-align: top; }
-        .grid .label { color: #6c757d; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .grid .value { font-weight: bold; font-size: 14px; margin-top: 3px; }
 
-        .ai-box {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px 24px;
-            margin-bottom: 24px;
-            border: 1px solid #f0f2f5;
-        }
+       .ai-box {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin-bottom: 10px;
+    border: 1px solid #f0f2f5;
+}
+
         .risk-high { color: #d63031; }
         .risk-low  { color: #00b894; }
 
@@ -65,14 +65,14 @@
             border-radius: 5px;
         }
 
-        .footer {
-            margin-top: 32px;
-            padding-top: 16px;
-            border-top: 1px solid #f0f2f5;
-            text-align: center;
-            color: #adb5bd;
-            font-size: 11px;
-        }
+       .footer {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #f0f2f5;
+    text-align: center;
+    color: #adb5bd;
+    font-size: 9px;
+}
 
         .badge {
             display: inline-block;
