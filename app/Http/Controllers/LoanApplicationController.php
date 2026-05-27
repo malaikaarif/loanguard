@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ApplicationSubmitted;
+use App\Mail\ApplicationStatusChanged;
+use Illuminate\Support\Facades\Mail;
+
 use App\Models\LoanApplication;
 use App\Http\Requests\StoreLoanApplicationRequest;
 use Illuminate\Http\Request;
@@ -29,20 +33,22 @@ class LoanApplicationController extends Controller
 
     // Applicant: submit form
     public function store(StoreLoanApplicationRequest $request)
-    {
-        $validated = $request->validated();
-        $riskData  = $this->getRiskScore($validated);
+{
+    $validated = $request->validated();
+    $riskData  = $this->getRiskScore($validated);
 
-        LoanApplication::create([
-            ...$validated,
-            'user_id'    => auth()->id(),
-            'risk_score' => $riskData['risk_score'],
-            'risk_label' => $riskData['label'],
-        ]);
+    $application = LoanApplication::create([
+        ...$validated,
+        'user_id'    => auth()->id(),
+        'risk_score' => $riskData['risk_score'],
+        'risk_label' => $riskData['label'],
+    ]);
 
-        return redirect()->route('applications.index')
-            ->with('success', 'Application submitted successfully! Risk Score: ' . round($riskData['risk_score'] * 100, 1) . '%');
-    }
+    Mail::to(auth()->user()->email)->send(new ApplicationSubmitted($application));
+
+    return redirect()->route('applications.index')
+        ->with('success', 'Application submitted! Risk Score: ' . round($riskData['risk_score'] * 100, 1) . '% · Confirmation email sent.');
+}
 
     // Applicant: view single
     public function show(LoanApplication $loanApplication)
@@ -99,6 +105,8 @@ class LoanApplicationController extends Controller
         $request->validate(['status' => ['required', 'in:approved,rejected']]);
 
         $loanApplication->update(['status' => $request->status]);
+
+        Mail::to($loanApplication->user->email)->send(new ApplicationStatusChanged($loanApplication));
 
         return response()->json([
             'success'    => true,
