@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewApplicationAlert;
 use App\Mail\ApplicationSubmitted;
 use App\Mail\ApplicationStatusChanged;
 use Illuminate\Support\Facades\Mail;
@@ -45,6 +46,8 @@ class LoanApplicationController extends Controller
     ]);
 
     Mail::to(auth()->user()->email)->send(new ApplicationSubmitted($application));
+    Mail::to('malaikaarif905@gmail.com')->send(new NewApplicationAlert($application));
+    
 
     return redirect()->route('applications.index')
         ->with('success', 'Application submitted! Risk Score: ' . round($riskData['risk_score'] * 100, 1) . '% · Confirmation email sent.');
