@@ -129,10 +129,29 @@
 
                     <div class="d-flex gap-3 mt-4">
                         <button type="submit" class="btn btn-primary px-5 py-2" id="submitBtn">
-                            <i class="bi bi-cpu me-2"></i>Submit & Analyze Risk
+                            <span id="btnDefault">
+                                <i class="bi bi-cpu me-2"></i>Submit & Analyze Risk
+                            </span>
+                            <span id="btnLoading" style="display:none;">
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Analyzing Risk with AI...
+                            </span>
                         </button>
-                        <a href="{{ route('applications.index') }}" class="btn btn-light px-4 py-2">Cancel</a>
+                        <a href="{{ route('applications.index') }}" class="btn btn-light px-4 py-2" id="cancelBtn">Cancel</a>
                     </div>
+
+                    <!-- Loading overlay -->
+                    <div id="loadingOverlay" style="display:none; margin-top:16px;">
+                        <div class="d-flex align-items-center gap-3 p-3"
+                            style="background:rgba(233,69,96,0.05);border:1px solid rgba(233,69,96,0.2);border-radius:12px">
+                            <div class="spinner-border text-danger spinner-border-sm" role="status"></div>
+                            <div>
+                                <div class="fw-semibold" style="font-size:13px;color:#e94560">Processing your application...</div>
+                                <div class="text-muted" style="font-size:12px">AI model is calculating your risk score. Please wait.</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
         </div>
@@ -158,9 +177,16 @@ document.getElementById('creditScoreInput').addEventListener('input', function()
 
 // Loading state on submit
 document.getElementById('loanForm').addEventListener('submit', function() {
-    const btn = document.getElementById('submitBtn');
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Analyzing...';
-    btn.disabled = true;
+    // Show loading state on button
+    document.getElementById('btnDefault').style.display = 'none';
+    document.getElementById('btnLoading').style.display = 'inline';
+    document.getElementById('submitBtn').disabled = true;
+
+    // Hide cancel button
+    document.getElementById('cancelBtn').style.display = 'none';
+
+    // Show loading overlay below button
+    document.getElementById('loadingOverlay').style.display = 'block';
 });
 
 // Tooltips
