@@ -37,4 +37,14 @@ class LoanApplication extends Model
             default    => 'warning',
         };
     }
+
+    public function repayments()
+{
+    return $this->hasMany(Repayment::class);
+}
+
+public function loanHistories()
+{
+    return $this->hasMany(LoanHistory::class);
+}
 }

@@ -6,6 +6,8 @@ use App\Mail\NewApplicationAlert;
 use App\Mail\ApplicationSubmitted;
 use App\Mail\ApplicationStatusChanged;
 use Illuminate\Support\Facades\Mail;
+use App\Models\LoanHistory;
+use App\Http\Controllers\RepaymentController;
 
 use App\Models\LoanApplication;
 use App\Http\Requests\StoreLoanApplicationRequest;
@@ -102,23 +104,38 @@ class LoanApplicationController extends Controller
     }
 
     // Admin: approve/reject via AJAX
-    public function updateStatus(Request $request, LoanApplication $loanApplication)
-    {
-        $this->authorize('updateStatus', LoanApplication::class);
-        $request->validate(['status' => ['required', 'in:approved,rejected']]);
+   public function updateStatus(Request $request, LoanApplication $loanApplication)
+{
+    $this->authorize('updateStatus', LoanApplication::class);
+    $request->validate(['status' => ['required', 'in:approved,rejected']]);
 
-        $loanApplication->update(['status' => $request->status]);
+    $oldStatus = $loanApplication->status;
 
-        Mail::to($loanApplication->user->email)->send(new ApplicationStatusChanged($loanApplication));
+    $loanApplication->update(['status' => $request->status]);
 
-        return response()->json([
-            'success'    => true,
-            'status'     => $loanApplication->status,
-            'badge_class'=> $loanApplication->statusBadge(),
-            'message'    => 'Application ' . $loanApplication->status . '.',
-        ]);
+    // Record loan history
+    LoanHistory::create([
+        'loan_application_id' => $loanApplication->id,
+        'old_status'          => $oldStatus,
+        'new_status'          => $request->status,
+        'note'                => 'Status changed by admin.',
+        'changed_by'          => auth()->id(),
+    ]);
+
+    // Generate installments if approved
+    if ($request->status === 'approved') {
+        RepaymentController::generateInstallments($loanApplication);
     }
 
+    Mail::to($loanApplication->user->email)->send(new ApplicationStatusChanged($loanApplication));
+
+    return response()->json([
+        'success'     => true,
+        'status'      => $loanApplication->status,
+        'badge_class' => $loanApplication->statusBadge(),
+        'message'     => 'Application ' . $loanApplication->status . '.',
+    ]);
+}
 
     // Download PDF
     public function downloadPdf(LoanApplication $loanApplication)

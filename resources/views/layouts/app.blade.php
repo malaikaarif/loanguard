@@ -114,6 +114,19 @@
                             <i class="bi bi-file-earmark-text me-2"></i> All Applications
                         </a>
                     </li>
+
+               <li class="nav-item">
+    <a href="{{ route('admin.feedbacks') }}" class="nav-link {{ request()->routeIs('admin.feedbacks') ? 'active' : '' }}">
+        <i class="bi bi-chat-square-text me-2"></i> Feedbacks
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('admin.repayments') }}" class="nav-link {{ request()->routeIs('admin.repayments') ? 'active' : '' }}">
+        <i class="bi bi-cash-stack me-2"></i> Repayments
+    </a>
+</li>
+
                 @else
                     <li class="nav-item">
                         <a href="{{ route('applicant.dashboard') }}" class="nav-link {{ request()->routeIs('applicant.dashboard') ? 'active' : '' }}">
@@ -130,7 +143,19 @@
                             <i class="bi bi-list-ul me-2"></i> My Applications
                         </a>
                     </li>
-                @endif
+
+                    <li class="nav-item">
+    <a href="{{ route('feedback.create') }}" class="nav-link {{ request()->routeIs('feedback.create') ? 'active' : '' }}">
+        <i class="bi bi-star me-2"></i> Give Feedback
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{ route('repayments.show', auth()->user()->loanApplications()->where('status','approved')->latest()->first()->id ?? 0) }}" class="nav-link">
+        <i class="bi bi-calendar-check me-2"></i> My Repayments
+    </a>
+</li>
+
+@endif
             </ul>
             <div class="px-3 mt-4 mb-2">
                 <small class="text-white-50 text-uppercase fw-bold" style="font-size:10px;letter-spacing:1px">Account</small>
