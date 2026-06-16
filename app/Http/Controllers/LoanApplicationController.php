@@ -37,6 +37,14 @@ class LoanApplicationController extends Controller
     // Applicant: submit form
     public function store(StoreLoanApplicationRequest $request)
 {
+    // Check if user already has an active loan
+$activeLoan = LoanApplication::where('user_id', auth()->id())
+    ->whereIn('status', ['pending', 'approved'])
+    ->exists();
+
+if ($activeLoan) {
+    return redirect()->back()->with('error', 'You already have an active loan. Please repay it before applying for a new one.');
+}
     $validated = $request->validated();
     $riskData  = $this->getRiskScore($validated);
 

@@ -8,6 +8,7 @@ use App\Models\Repayment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
 
 class RepaymentController extends Controller
 {
@@ -16,7 +17,7 @@ class RepaymentController extends Controller
     public static function generateInstallments(LoanApplication $loan)
     {
         $months = 12; // 12 monthly installments
-        $interest = 0.10; // 10% interest
+      $interest = DB::table('settings')->where('key', 'interest_rate')->value('value') / 100;
         $total = $loan->loan_amount * (1 + $interest);
         $monthly = $total / $months;
 
